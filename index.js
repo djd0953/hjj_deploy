@@ -40,7 +40,7 @@ app.post('/', (req, res) => {
         });
       }
     }
-    catch (error) {
+    catch (err) {
       console.error('❌ Deploy failed:', err);
       res.writeHead(405); // Method Not Allowed
       res.end('Not allowed');
