@@ -19,7 +19,7 @@ app.listen(PORT, () => {
 
 app.post('/', (req, res) => {
     try {
-      console.log(req.body?.ref)
+      console.log(req.body)
       if (!req.body.ref) throw new Error("No ref")
 
       const branchName = req.body.ref.split('/')[2];
@@ -39,6 +39,11 @@ app.post('/', (req, res) => {
           res.writeHead(200);
           res.end('Deploy complete');
         });
+      }
+      else {
+        console.log('❌ Not main branch, ignoring');
+        res.writeHead(200);
+        res.end('Not main branch, ignoring');
       }
     }
     catch (err) {
