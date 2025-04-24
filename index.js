@@ -10,7 +10,7 @@ if (!process.env.GITHUB_WEB_HOOK_PORT) {
 }
 const PORT = process.env.GITHUB_WEB_HOOK_PORT;
 
-app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 // 서버 시작
 app.listen(PORT, () => {
@@ -19,6 +19,7 @@ app.listen(PORT, () => {
 
 app.post('/', (req, res) => {
     try {
+      console.log(req.body?.ref)
       if (!req.body.ref) throw new Error("No ref")
 
       const branchName = req.body.ref.split('/')[2];
