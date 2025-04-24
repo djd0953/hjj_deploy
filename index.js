@@ -1,9 +1,14 @@
+require('dotenv').config();
 const { exec } = require('child_process');
 const express = require('express');
 const app = express();
 
 // 필요한 포트 번호
-const PORT = 9000;
+if (!process.env.GITHUB_WEB_HOOK_PORT) {
+  console.error('❌ PORT is not defined in .env file');
+  process.exit(1);
+}
+const PORT = process.env.GITHUB_WEB_HOOK_PORT;
 
 app.use(express.json())
 
@@ -16,8 +21,10 @@ app.post('/', (req, res) => {
     try {
       if (!req.body.ref) throw new Error("No ref")
 
-      console.log('📩 Webhook received at', new Date().toISOString());
-      if (req.body.ref === 'refs/heads/main') {
+      const branchName = req.body.ref.split('/')[2];
+
+      console.log('📩 Webhook received at', new Date().toISOString(), `Branch: ${branchName}`);
+      if (branchName === 'main') {
         // deploy.sh 실행
         exec('/home/hjj0106/hjj-webhook/deploy.sh', (err, stdout, stderr) => {
           if (err) {
