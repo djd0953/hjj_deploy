@@ -19,10 +19,10 @@ app.listen(PORT, () => {
 
 app.post('/', (req, res) => {
     try {
-      console.log(req.body)
-      if (!req.body.ref) throw new Error("No ref")
+      const body = JSON.parse(req.body.payload)
+      if (!body.ref) throw new Error("No ref")
 
-      const branchName = req.body.ref.split('/')[2];
+      const branchName = body.ref.split('/')[2];
 
       console.log('📩 Webhook received at', new Date().toISOString(), `Branch: ${branchName}`);
       if (branchName === 'main') {
