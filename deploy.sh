@@ -2,17 +2,19 @@
 
 set -e  # 에러 발생 시 스크립트 즉시 중단
 
-cd /home/hjj0106/hjj-0106 || {
-  echo "❌ 디렉토리 이동 실패"
-  exit 1
-}
+packageName=hjj-server
 
-echo "📁 현재 디렉토리: $(pwd)"
+if [ ! -d "$HOME/$packageName" ]; then
+  echo "Not found $packageName package!"
+  exit 1
+fi
+
+cd $HOME/$packageName
 
 echo "🌀 최신 코드 가져오는 중..."
 git fetch origin main 2>&1
 git checkout main
-git reset --hard origin/main
+git reset origin/main --hard
 
 echo "✅ 코드 업데이트 완료"
 
